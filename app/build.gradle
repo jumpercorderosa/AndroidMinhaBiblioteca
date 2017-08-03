@@ -1,0 +1,53 @@
+//Temos que remover pois é uma biblioteca e não mais um plugin
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        //O AplicationID tb não é necessário
+        //ApplicationId "com.example.danielletolentino.minhabiblioteca"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+//shift+shift procura por 'grade.properties' e adiciona as variaveis lá
+//se der pau SET JAVA_HOME=C:\Program Files\Java\jdk1.8.0_111\
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // Altere a linha abaixo para um diretório do seu computador
+            repository(url: "file:///C:/rep/")
+            pom.groupId = GROUP
+            pom.artifactId = POM_ARTIFACT_ID
+            pom.version = VERSION_NAME
+        }
+    }
+}
+task install(dependsOn: uploadArchives)
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    //compile 'com.android.support:appcompat-v' + SUPPORT_GOOGLE_VERSION
+    testCompile 'junit:junit:4.12'
+}
+
+//abro o terminal e digito o nome da task que quero utilizar, neste caso 'gradlew install'
+
+
